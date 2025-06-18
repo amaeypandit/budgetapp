@@ -1,0 +1,9 @@
+{
+    "files.exclude": {
+      "**/bank": true
+    },
+    "python.analysis.exclude": [
+      "bank"
+    ]
+  }
+  
