@@ -44,20 +44,17 @@ def parse_structured_line(text):
         }
     return None
 
-if __name__ == "__main__":
+def extract_transactions_from_pdf(file_path):
     # Step 1: Extract text from PDF
-    pdf_text = extract_text_from_pdf("statement.pdf")
+    pdf_text = extract_text_from_pdf(file_path)
 
     # Step 2: Parse out candidate transaction lines
     lines = extract_transaction_lines(pdf_text)
-    print(f"Found {len(lines)} transaction-like lines:")
-    for line in lines[:5]:
-        print("→", line)
 
     # Step 3: Run transformer to structure each line
     structured = extract_structured_data(lines)
 
-    # Step 4: Print results (or later convert to DataFrame)
+    # Step 4: Parse results
     clean_rows = []
     for entry in structured:
         parsed = parse_structured_line(entry["extracted"])
@@ -66,6 +63,11 @@ if __name__ == "__main__":
 
     # Convert to DataFrame
     df = pd.DataFrame(clean_rows)
+    return df
 
+if __name__ == "__main__":
+    df = extract_transactions_from_pdf("statement.pdf")
+    print(f"Found {len(df)} transactions:")
+    print(df.head())
     # Optional: Save to CSV
     df.to_csv("categorized_transactions.csv", index=False)
